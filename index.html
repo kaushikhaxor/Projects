@@ -39,9 +39,9 @@
       <video id="myVideo" src="video.mp4" preload="auto" loop playsinline webkit-playsinline></video>
     </a-assets>
 
-    <!-- Video plane always in front of camera -->
-    <a-entity id="videoGroup" visible="false" position="0 0 -0.5">
-      <a-plane id="videoPlane" src="#myVideo" width="0.6" height="1" material="shader: flat; side: double; opacity: 0;"></a-plane>
+    <!-- Video plane always in front of camera, smaller and slightly farther -->
+    <a-entity id="videoGroup" visible="false" position="0 0 -2">
+      <a-plane id="videoPlane" src="#myVideo" width="0.30" height="0.5" material="shader: flat; side: double; opacity: 0;"></a-plane>
     </a-entity>
 
     <!-- AR camera -->
@@ -80,7 +80,7 @@
         if (camera) {
           const camPos = camera.object3D.position;
           const camRot = camera.object3D.rotation;
-          this.el.object3D.position.set(camPos.x, camPos.y, camPos.z - 0.5);
+          this.el.object3D.position.set(camPos.x, camPos.y, camPos.z - 2); // keep slightly farther
           this.el.object3D.rotation.set(camRot.x, camRot.y, camRot.z);
         }
       }
