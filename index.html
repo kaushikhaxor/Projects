@@ -26,7 +26,6 @@
 </head>
 <body>
 
-  
   <!-- Loader overlay -->
   <div class="arjs-loader">
     <div>🎉 Open Invitation</div>
@@ -35,17 +34,18 @@
 
   <a-scene vr-mode-ui="enabled: false" embedded renderer="antialias: true; logarithmicDepthBuffer: true;"
            arjs="sourceType: webcam; debugUIEnabled: false;">
+
     <a-assets>
       <video id="myVideo" src="video.mp4" preload="auto" loop playsinline webkit-playsinline></video>
     </a-assets>
 
-    <!-- Video plane with smooth fade-in -->
-    <a-entity id="videoGroup" visible="false" position="0 0 -2.2">
-      <a-plane id="videoPlane" src="#myVideo" width="0.4" height="0.7" material="shader: flat; side: double; opacity: 0;"></a-plane>
+    <!-- Video plane always in front of camera -->
+    <a-entity id="videoGroup" visible="false" position="0 0 -0.5">
+      <a-plane id="videoPlane" src="#myVideo" width="0.6" height="1" material="shader: flat; side: double; opacity: 0;"></a-plane>
     </a-entity>
 
     <!-- AR camera -->
-    <a-entity camera look-controls></a-entity>
+    <a-entity camera look-controls position="0 0 0"></a-entity>
   </a-scene>
 
   <script>
@@ -72,6 +72,21 @@
         videoPlane.setAttribute('material', 'opacity', opacity);
       }, 20);
     });
+
+    // Make video always face camera and move with it
+    AFRAME.registerComponent('follow-camera', {
+      tick: function () {
+        const camera = document.querySelector('[camera]');
+        if (camera) {
+          const camPos = camera.object3D.position;
+          const camRot = camera.object3D.rotation;
+          this.el.object3D.position.set(camPos.x, camPos.y, camPos.z - 0.5);
+          this.el.object3D.rotation.set(camRot.x, camRot.y, camRot.z);
+        }
+      }
+    });
+
+    videoGroup.setAttribute('follow-camera', '');
   </script>
 </body>
 </html>
