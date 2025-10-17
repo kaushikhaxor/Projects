@@ -2,96 +2,75 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>Floating AR Video (No Marker)</title>
-
-  <!-- A-Frame + AR.js -->
+  <title>AR Wedding Invitation</title>
   <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
   <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.js"></script>
 
   <style>
-    body { margin: 0; overflow: hidden; background: black; }
+    body { margin: 0; overflow: hidden; background: #000; font-family: 'Segoe UI', sans-serif; }
     .arjs-loader {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: rgba(0, 0, 0, 0.85);
-      color: white;
-      font-family: sans-serif;
-      z-index: 9999;
-      flex-direction: column;
+      position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center;
+      align-items: center; background: rgba(0,0,0,0.9); color: #fff; z-index: 9999; animation: fadeIn 0.8s ease forwards;
     }
-    button {
-      margin-top: 15px;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 25px;
-      background: #ff007f;
-      color: #fff;
-      font-size: 1em;
-      cursor: pointer;
+    .arjs-loader div { font-size: 1.5em; margin-bottom: 20px; opacity: 0; animation: fadeInText 1s forwards 0.5s; }
+    .arjs-loader button {
+      padding: 12px 30px; border: none; border-radius: 25px; background: #fff; color: #000; font-size: 1em;
+      cursor: pointer; opacity: 0; animation: fadeInText 1s forwards 1s; transition: transform 0.3s, background 0.3s, color 0.3s;
     }
-    button:hover { background: #ff3399; }
+    .arjs-loader button:hover { transform: scale(1.1); background: #000; color: #fff; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes fadeInText { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .fade-out { animation: fadeOut 0.8s forwards; }
+    @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; visibility: hidden; } }
   </style>
 </head>
-
 <body>
+
+  
+  <!-- Loader overlay -->
   <div class="arjs-loader">
-    <div>🎥 Allow camera to start AR experience</div>
-    <button id="startBtn">Start AR Video</button>
+    <div>🎉 Open Invitation</div>
+    <button id="startBtn">Start AR</button>
   </div>
 
-  <a-scene
-    vr-mode-ui="enabled: false"
-    embedded
-    renderer="antialias: true; logarithmicDepthBuffer: true;"
-    arjs="sourceType: webcam; trackingMethod: best; debugUIEnabled: false;"
-  >
-    <!-- Video asset -->
+  <a-scene vr-mode-ui="enabled: false" embedded renderer="antialias: true; logarithmicDepthBuffer: true;"
+           arjs="sourceType: webcam; debugUIEnabled: false;">
     <a-assets>
-      <video
-        id="myVideo"
-        src="video.mp4"
-        preload="auto"
-        loop
-        playsinline
-        webkit-playsinline
-        muted
-      ></video>
+      <video id="myVideo" src="video.mp4" preload="auto" loop playsinline webkit-playsinline></video>
     </a-assets>
 
-    <!-- Group entity for video plane -->
-    <a-entity id="videoGroup" position="0 0 -0.6" rotation="0 0 0" visible="false">
-      <a-plane
-        src="#myVideo"
-        width="1.2"
-        height="0.7"
-        rotation="0 0 0"
-        material="shader: flat; side: double;"
-      ></a-plane>
+    <!-- Video plane with smooth fade-in -->
+    <a-entity id="videoGroup" visible="false" position="0 0 -2.2">
+      <a-plane id="videoPlane" src="#myVideo" width="0.4" height="0.7" material="shader: flat; side: double; opacity: 0;"></a-plane>
     </a-entity>
 
-    <!-- Camera -->
-    <a-entity camera></a-entity>
+    <!-- AR camera -->
+    <a-entity camera look-controls></a-entity>
   </a-scene>
 
   <script>
     const loader = document.querySelector('.arjs-loader');
     const startBtn = document.getElementById('startBtn');
     const video = document.getElementById('myVideo');
-    const group = document.getElementById('videoGroup');
+    const videoGroup = document.getElementById('videoGroup');
+    const videoPlane = document.getElementById('videoPlane');
 
     startBtn.addEventListener('click', () => {
-      loader.style.display = 'none';
-      group.setAttribute('visible', true);
+      loader.classList.add('fade-out');           // Fade out loader
+      videoGroup.setAttribute('visible', true);  // Show video
+      video.muted = false;
+      video.play().catch(() => alert('⚠️ Tap screen to start video.'));
 
-      video.play().then(() => {
-        console.log('✅ Video started, AR active');
-      }).catch(err => {
-        console.warn('⚠️ Autoplay blocked:', err);
-        alert('Tap screen once to start video.');
-      });
+      // Smooth fade-in for video
+      let opacity = 0;
+      const fadeInterval = setInterval(() => {
+        opacity += 0.02;
+        if (opacity >= 1) {
+          opacity = 1;
+          clearInterval(fadeInterval);
+        }
+        videoPlane.setAttribute('material', 'opacity', opacity);
+      }, 20);
     });
   </script>
 </body>
