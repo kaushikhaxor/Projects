@@ -2,5 +2,5 @@
   "Status": true,
   "version": 2,
   "libs": "https://github.com/kaushikhaxor/Projects/releases/download/v1.0/Kaushik_payload.png",
-  "Dlib": false
+  "Dlib": true
 }
