@@ -9,7 +9,7 @@
     "bin": true,
     "ifsc": true,
     "gst": true,
-    "telegram": true,
+    "telegram": false,
     "rashan": true,
     "upi": true,
     "upi2": true,
