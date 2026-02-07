@@ -5,17 +5,17 @@
   "features": {
     "num": true,
     "carinfo": true,
-    "aadhar": false,
+    "aadhar": true,
     "bin": true,
     "ifsc": true,
     "gst": true,
     "telegram": true,
-    "rashan": false,
+    "rashan": true,
     "upi": true,
     "upi2": true,
     "pan": true,
     "v2": true,
-    "smsbom": false
+    "smsbom": true
   },
   "developer": {
     "name": "Kaushik",
