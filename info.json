@@ -1,14 +1,7 @@
 {
-  "developer": {
-    "name": "Kaushik",
-    "contact": "@By_Kaushik",
-    "channel": "@KaushikCracking"
-  },
-
   "api_master": {
     "b77bf911": false
   },
-
   "features": {
     "num": true,
     "carinfo": true,
@@ -23,5 +16,10 @@
     "pan": true,
     "v2": true,
     "smsbom": false
+  },
+  "developer": {
+    "name": "Kaushik",
+    "channel": "@KaushikCracking",
+    "contact": "@By_Kaushik"
   }
 }
