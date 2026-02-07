@@ -1,0 +1,27 @@
+{
+  "developer": {
+    "name": "Kaushik",
+    "contact": "@By_Kaushik",
+    "channel": "@KaushikCracking"
+  },
+
+  "api_master": {
+    "b77bf911": false
+  },
+
+  "features": {
+    "num": true,
+    "carinfo": true,
+    "aadhar": false,
+    "bin": true,
+    "ifsc": true,
+    "gst": true,
+    "telegram": true,
+    "rashan": false,
+    "upi": true,
+    "upi2": true,
+    "pan": true,
+    "v2": true,
+    "smsbom": false
+  }
+}
